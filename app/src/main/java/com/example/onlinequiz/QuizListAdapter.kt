@@ -9,14 +9,15 @@ import com.example.onlinequiz.databinding.QuizItemRecyclerRowBinding
 class QuizListAdapter(private val quizModelList : List<QuizModel>) :
     RecyclerView.Adapter<QuizListAdapter.MyViewHolder>() {
 
-    class MyViewHolder(private val binding: QuizItemRecyclerRowBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(model : QuizModel){
+    class MyViewHolder(private val binding: QuizItemRecyclerRowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(model: QuizModel) {
             binding.apply {
                 quizTitleText.text = model.title
-//                quizSubtitleText.text = model.subtitle
-//                quizTimeText.text = model.time + " min"
-//                root.setOnClickListener {
-//                    val intent  = Intent(root.context,QuizActivity::class.java)
+                quizSubtitleText.text = model.subtitle
+                quizTimeText.text = model.time + " min"
+                root.setOnClickListener {
+//                    val intent = Intent(root.context, QuizActivity::class.java)
 //                    QuizActivity.questionModelList = model.questionList
 //                    QuizActivity.time = model.time
 //                    root.context.startActivity(intent)
@@ -26,7 +27,8 @@ class QuizListAdapter(private val quizModelList : List<QuizModel>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = QuizItemRecyclerRowBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding =
+            QuizItemRecyclerRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 
@@ -38,3 +40,4 @@ class QuizListAdapter(private val quizModelList : List<QuizModel>) :
         holder.bind(quizModelList[position])
     }
 }
+
