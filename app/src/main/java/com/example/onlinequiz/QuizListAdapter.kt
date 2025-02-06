@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.onlinequiz.databinding.QuizItemRecyclerRowBinding
 
-class QuizListAdapter(private val quizModelList : List<QuizModel>) :
+class QuizListAdapter(private var quizModelList: List<QuizModel>) :
     RecyclerView.Adapter<QuizListAdapter.MyViewHolder>() {
 
     class MyViewHolder(private val binding: QuizItemRecyclerRowBinding) :
@@ -39,5 +39,9 @@ class QuizListAdapter(private val quizModelList : List<QuizModel>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(quizModelList[position])
     }
-}
 
+    fun updateList(newList: List<QuizModel>) {
+        quizModelList = newList
+        notifyDataSetChanged()
+    }
+}

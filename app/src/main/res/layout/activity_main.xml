@@ -16,43 +16,51 @@
         android:src="@drawable/main_img"/>
 
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:background="@drawable/rounded_corner"
-      android:backgroundTint="@color/blue"
-      android:padding="8dp"
-      android:orientation="vertical">
-    
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quizz App"
-        android:gravity="center"
-        android:textSize="34sp"
-        android:textColor="@color/white"
-        android:letterSpacing="0.1"
-        android:textStyle="bold"/>
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="@color/blue"
+        android:padding="8dp"
+        android:orientation="vertical">
 
-      <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="Let's Play this quiz to enhance your knowledge"
-          android:gravity="center"
-          android:textSize="18sp"
-          android:layout_margin="16dp"
-          android:textColor="@color/white"
-          android:textStyle="bold"/>
-  </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quizz App"
+            android:gravity="center"
+            android:textSize="34sp"
+            android:textColor="@color/white"
+            android:letterSpacing="0.1"
+            android:textStyle="bold"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Let's Play this quiz to enhance your knowledge"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_margin="16dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Search courses"
+        android:iconifiedByDefault="false"
+        android:paddingEnd="16dp"
+        android:layout_marginBottom="16dp" />
     <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="All items"
-      android:layout_marginTop="16dp"
-      android:layout_marginStart="4dp"
-      android:textSize="20sp"
-      android:textStyle="bold"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All items"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="4dp"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -73,6 +81,4 @@
 
     </RelativeLayout>
 
-
-
-  </LinearLayout>
+</LinearLayout>
