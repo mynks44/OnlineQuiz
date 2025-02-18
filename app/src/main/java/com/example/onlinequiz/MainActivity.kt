@@ -1,22 +1,27 @@
 package com.example.onlinequiz
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.onlinequiz.databinding.ActivityMainBinding
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.onlinequiz.databinding.ActivityMainBinding
 import com.google.firebase.database.FirebaseDatabase
 import androidx.appcompat.widget.SearchView
+import com.google.android.material.navigation.NavigationView
 
-class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
-    lateinit var adapter: QuizListAdapter
-    lateinit var quizModelList: MutableList<QuizModel>
-    lateinit var filteredQuizList: MutableList<QuizModel>
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var adapter: QuizListAdapter
+    private lateinit var quizModelList: MutableList<QuizModel>
+    private lateinit var filteredQuizList: MutableList<QuizModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,17 +29,45 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbar)
+        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.open, R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        binding.navigationView.setNavigationItemSelectedListener(this)
+
         quizModelList = mutableListOf()
         filteredQuizList = mutableListOf()
 
-        setupSearchView() //searchbar
-
+        setupSearchView()
         getDataFromFirebase()
     }
 
-    private fun setupRecyclerView(){
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_home -> Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_about -> {
+                // about us
+                val intent = Intent(this, AboutUsActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_exit -> finish()
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    private fun setupRecyclerView() {
         binding.progressBar.visibility = View.GONE
-        adapter = QuizListAdapter(filteredQuizList)  // Use filtered list
+        adapter = QuizListAdapter(filteredQuizList)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
     }
@@ -42,16 +75,12 @@ class MainActivity : AppCompatActivity() {
     private fun setupSearchView() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    filterList(it)
-                }
+                query?.let { filterList(it) }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-                    filterList(it)
-                }
+                newText?.let { filterList(it) }
                 return true
             }
         })

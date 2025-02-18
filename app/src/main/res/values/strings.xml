@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">OnlineQuiz</string>
+        <string name="app_name">OnlineQuiz</string>
+        <string name="open">Open Navigation</string>
+        <string name="close">Close Navigation</string>
+
+        <string name="navigation_drawer_open">Open Navigation</string>
+        <string name="navigation_drawer_close">Close Navigation</string>
+
+
 </resources>
+
