@@ -14,6 +14,7 @@ import com.example.onlinequiz.databinding.ActivityMainBinding
 import com.google.firebase.database.FirebaseDatabase
 import androidx.appcompat.widget.SearchView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -45,16 +46,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_home -> Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_home -> {
+                Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
+            }
             R.id.nav_about -> {
-                // about us
                 val intent = Intent(this, AboutUsActivity::class.java)
                 startActivity(intent)
             }
-            R.id.nav_exit -> finish()
+            R.id.nav_exit -> {
+                finish()
+            }
+            R.id.nav_sign_out -> {
+                signOutUser()
+                return true
+            }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun signOutUser() {
+        FirebaseAuth.getInstance().signOut()
+        Toast.makeText(this, "Signed Out", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
     override fun onBackPressed() {
