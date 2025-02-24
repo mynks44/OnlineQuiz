@@ -11,14 +11,16 @@
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Email"/>
+        android:hint="Enter Email"
+        tools:ignore="Autofill,HardcodedText,TextFields" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Password"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        tools:ignore="Autofill,HardcodedText" />
 
     <CheckBox
         android:id="@+id/rememberMeCheckBox"
@@ -40,6 +42,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already have an account? Login"
-        android:textColor="@android:color/holo_blue_dark"/>
+        android:textColor="@android:color/holo_blue_dark"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/tvForgotPassword"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:text="Forgot Password?"
+        android:textColor="@color/blue"
+        android:textSize="14sp"
+        tools:ignore="HardcodedText" />
+
 
 </LinearLayout>

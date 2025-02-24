@@ -41,7 +41,6 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            //firebase login
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -60,6 +59,23 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
+                }
+        }
+
+        binding.tvForgotPassword.setOnClickListener {
+            val email = binding.etEmail.text.toString().trim()
+
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Enter your email to reset password", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            auth.sendPasswordResetEmail(email)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Password reset link sent to your email", Toast.LENGTH_LONG).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Failed to send reset email: ${it.message}", Toast.LENGTH_LONG).show()
                 }
         }
     }
