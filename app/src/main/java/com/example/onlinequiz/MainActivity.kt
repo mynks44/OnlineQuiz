@@ -1,9 +1,11 @@
 package com.example.onlinequiz
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -15,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import androidx.appcompat.widget.SearchView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -23,6 +26,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var adapter: QuizListAdapter
     private lateinit var quizModelList: MutableList<QuizModel>
     private lateinit var filteredQuizList: MutableList<QuizModel>
+    private lateinit var database: DatabaseReference
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +42,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         binding.navigationView.setNavigationItemSelectedListener(this)
 
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference.child("Users")
+
         quizModelList = mutableListOf()
         filteredQuizList = mutableListOf()
 
+        fetchUsername()
         setupSearchView()
         getDataFromFirebase()
     }
@@ -136,5 +145,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .addOnFailureListener {
                 Toast.makeText(this, "Failed to load data.", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun fetchUsername() {
+        val userId = auth.currentUser?.uid ?: return
+
+        database.child(userId).get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                val username = snapshot.child("username").value.toString()
+                val headerView = binding.navigationView.getHeaderView(0)
+                val welcomeTextView = headerView.findViewById<TextView>(R.id.navHeaderText)
+                welcomeTextView.text = "Welcome, $username!"
+            }
+        }.addOnFailureListener {
+            Toast.makeText(this, "Failed to fetch username", Toast.LENGTH_SHORT).show()
+        }
     }
 }
