@@ -8,10 +8,18 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Username"
+        android:hint="Enter First Name"
+        android:inputType="text"
+        tools:ignore="Autofill,HardcodedText" />
+
+    <EditText
+        android:id="@+id/etLastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Last Name"
         android:inputType="text"
         tools:ignore="Autofill,HardcodedText" />
 
@@ -31,7 +39,6 @@
         android:inputType="textPassword"
         tools:ignore="Autofill,HardcodedText" />
 
-
     <CheckBox
         android:id="@+id/rememberMeCheckBox"
         android:layout_width="wrap_content"
@@ -45,7 +52,8 @@
         android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign Up"/>
+        android:text="Sign Up"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/btnLogin"
@@ -54,7 +62,6 @@
         android:text="Already have an account? Login"
         android:textColor="@android:color/holo_blue_dark"
         tools:ignore="HardcodedText" />
-
 
     <TextView
         android:id="@+id/tvForgotPassword"
@@ -66,6 +73,5 @@
         android:textColor="@color/blue"
         android:textSize="14sp"
         tools:ignore="HardcodedText" />
-
 
 </LinearLayout>

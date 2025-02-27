@@ -3,6 +3,7 @@ package com.example.onlinequiz
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -26,7 +27,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var adapter: QuizListAdapter
     private lateinit var quizModelList: MutableList<QuizModel>
     private lateinit var filteredQuizList: MutableList<QuizModel>
-    private lateinit var database: DatabaseReference
+    private lateinit var databaseUser: DatabaseReference
+    private lateinit var databaseQuestions: DatabaseReference
+
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +46,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.navigationView.setNavigationItemSelectedListener(this)
 
         auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance().reference.child("Users")
+        databaseUser = FirebaseDatabase.getInstance().reference.child("Users")
+        databaseQuestions = FirebaseDatabase.getInstance().reference.child("questions")
 
         quizModelList = mutableListOf()
         filteredQuizList = mutableListOf()
 
-        fetchUsername()
+        fetchFirstName()
         setupSearchView()
         getDataFromFirebase()
     }
@@ -129,6 +133,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun getDataFromFirebase() {
         binding.progressBar.visibility = View.VISIBLE
         FirebaseDatabase.getInstance().reference
+            .child("Questions")
             .get()
             .addOnSuccessListener { dataSnapshot ->
                 if (dataSnapshot.exists()) {
@@ -138,28 +143,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             quizModelList.add(quizModel)
                         }
                     }
+                    filteredQuizList.addAll(quizModelList)
+                    setupRecyclerView()
+                    binding.progressBar.visibility = View.GONE
+                } else {
+                    Log.d("FirebaseData", "No quizzes available in the database.")
+                    binding.progressBar.visibility = View.GONE
                 }
-                filteredQuizList.addAll(quizModelList)
-                setupRecyclerView()
             }
-            .addOnFailureListener {
+            .addOnFailureListener { exception ->
+                Log.d("FirebaseData", "Failed to fetch quizzes: ${exception.message}")
                 Toast.makeText(this, "Failed to load data.", Toast.LENGTH_SHORT).show()
+                binding.progressBar.visibility = View.GONE
             }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun fetchUsername() {
+    private fun fetchFirstName() {
         val userId = auth.currentUser?.uid ?: return
 
-        database.child(userId).get().addOnSuccessListener { snapshot ->
+        databaseUser.child(userId).get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
-                val username = snapshot.child("username").value.toString()
+                val firstName = snapshot.child("firstName").value.toString()  // Fetch first name
                 val headerView = binding.navigationView.getHeaderView(0)
                 val welcomeTextView = headerView.findViewById<TextView>(R.id.navHeaderText)
-                welcomeTextView.text = "Welcome, $username!"
+                welcomeTextView.text = "Welcome, $firstName!"
             }
         }.addOnFailureListener {
-            Toast.makeText(this, "Failed to fetch username", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Failed to fetch first name", Toast.LENGTH_SHORT).show()
         }
     }
 }

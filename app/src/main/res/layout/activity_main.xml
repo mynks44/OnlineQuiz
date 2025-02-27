@@ -18,9 +18,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorControlHighlight"
             android:title="Quiz App"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -45,7 +46,8 @@
                 android:textSize="34sp"
                 android:textColor="@color/white"
                 android:letterSpacing="0.1"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -55,7 +57,8 @@
                 android:textSize="18sp"
                 android:layout_margin="16dp"
                 android:textColor="@color/white"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <androidx.appcompat.widget.SearchView
@@ -65,7 +68,8 @@
             android:queryHint="Search courses"
             android:iconifiedByDefault="false"
             android:paddingEnd="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            tools:ignore="RtlSymmetry" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +78,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="4dp"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -91,7 +96,7 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp" />
         </RelativeLayout>
     </LinearLayout>
 

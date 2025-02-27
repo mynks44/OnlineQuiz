@@ -10,11 +10,9 @@
         android:theme="@style/Theme.OnlineQuiz"
         tools:targetApi="31">
 
-        <activity android:name=".QuizActivity" android:exported="false" />
-        <activity android:name=".AboutUsActivity"/>
-
         <!-- WelcomeActivity is the first screen -->
-        <activity android:name=".WelcomeActivity"
+        <activity
+            android:name=".WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -22,12 +20,24 @@
             </intent-filter>
         </activity>
 
-        <!-- Sign Up and Login -->
-        <activity android:name=".SignUpActivity"/>
-        <activity android:name=".LoginActivity"/>
+        <!-- Authentication Activities -->
+        <activity android:name=".SignUpActivity"
+            android:exported="true"/> <!-- Ensure the correct class name -->
 
-        <!-- MainActivity (home screen after login) -->
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".LoginActivity"
+            android:exported="true"/>
+
+        <!-- MainActivity (Home screen after login) -->
+        <activity android:name=".MainActivity"
+            android:exported="true"/>
+
+        <!-- Other App Activities -->
+        <activity android:name=".QuizActivity"
+            android:exported="false"/> <!-- Keep private for security -->
+
+        <activity android:name=".AboutUsActivity"
+            android:exported="false"/> <!-- No need to be accessible externally -->
+
     </application>
 
 </manifest>
