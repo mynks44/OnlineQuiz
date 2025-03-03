@@ -51,6 +51,7 @@ class QuizActivity : AppCompatActivity(),View.OnClickListener {
     private fun startTimer(){
         val totalTimeInMillis = time.toInt() * 60 * 1000L
         object : CountDownTimer(totalTimeInMillis,1000L){
+            @SuppressLint("DefaultLocale")
             override fun onTick(millisUntilFinished: Long) {
                 val seconds = millisUntilFinished /1000
                 val minutes = seconds/60
@@ -66,6 +67,7 @@ class QuizActivity : AppCompatActivity(),View.OnClickListener {
         }.start()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun loadQuestions(){
         selectedAnswer = ""
         if(currentQuestionIndex == questionModelList.size){
@@ -114,6 +116,7 @@ class QuizActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun finishQuiz(){
         val totalQuestions = questionModelList.size
         val percentage = ((score.toFloat() / totalQuestions.toFloat() ) *100 ).toInt()

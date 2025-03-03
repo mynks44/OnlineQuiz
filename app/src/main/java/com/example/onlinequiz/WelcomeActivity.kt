@@ -10,15 +10,13 @@ import android.util.Patterns
 
 class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState) // ✅ Correct
+        super.onCreate(savedInstanceState)
 
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            // student is already logged in, go to MainActivity
             startActivity(Intent(this, MainActivity::class.java))
         } else {
-            // student is not logged in, go to SignUpActivity
             startActivity(Intent(this, SignUpActivity::class.java))
         }
         finish()

@@ -1,5 +1,6 @@
 package com.example.onlinequiz
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ class QuizListAdapter(private var quizModelList: List<QuizModel>) :
 
     class MyViewHolder(private val binding: QuizItemRecyclerRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(model: QuizModel) {
             binding.apply {
                 quizTitleText.text = model.title
@@ -40,6 +42,7 @@ class QuizListAdapter(private var quizModelList: List<QuizModel>) :
         holder.bind(quizModelList[position])
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: List<QuizModel>) {
         quizModelList = newList
         notifyDataSetChanged()

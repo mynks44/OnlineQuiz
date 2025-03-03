@@ -55,12 +55,23 @@
         android:text="Sign Up"
         tools:ignore="HardcodedText" />
 
+    <Button
+        android:id="@+id/btnSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign In"
+        android:visibility="gone"
+        tools:ignore="HardcodedText" />
+
     <TextView
         android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already have an account? Login"
         android:textColor="@android:color/holo_blue_dark"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="10dp"
         tools:ignore="HardcodedText" />
 
     <TextView
