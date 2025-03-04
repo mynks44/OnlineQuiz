@@ -63,18 +63,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
             }
             R.id.nav_about -> {
-                val intent = Intent(this, AboutUsActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, AboutUsActivity::class.java))
+            }
+            R.id.nav_feedback -> {
+                startActivity(Intent(this, FeedbackActivity::class.java))
+            }
+            R.id.nav_sign_out -> {
+                signOutUser()
             }
             R.id.nav_exit -> {
                 finish()
             }
-            R.id.nav_sign_out -> {
-                signOutUser()
-                return true
-            }
         }
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        binding.drawerLayout.closeDrawer(GravityCompat.START) // Close the drawer after selection
         return true
     }
 
@@ -87,7 +88,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         finish()
     }
 
-    @Deprecated("This method has been deprecated in favor of using the\n      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.\n      The OnBackPressedDispatcher controls how back button events are dispatched\n      to one or more {@link OnBackPressedCallback} objects.")
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -146,11 +146,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                     filteredQuizList.addAll(quizModelList)
                     setupRecyclerView()
-                    binding.progressBar.visibility = View.GONE
                 } else {
                     Log.d("FirebaseData", "No quizzes available in the database.")
-                    binding.progressBar.visibility = View.GONE
                 }
+                binding.progressBar.visibility = View.GONE
             }
             .addOnFailureListener { exception ->
                 Log.d("FirebaseData", "Failed to fetch quizzes: ${exception.message}")
@@ -165,7 +164,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         databaseUser.child(userId).get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
-                val firstName = snapshot.child("firstName").value.toString()  // Fetch first name
+                val firstName = snapshot.child("firstName").value.toString()
                 val headerView = binding.navigationView.getHeaderView(0)
                 val welcomeTextView = headerView.findViewById<TextView>(R.id.navHeaderText)
                 welcomeTextView.text = "Welcome, $firstName!"

@@ -31,17 +31,17 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnSignIn.visibility = View.GONE
         binding.btnSignUp.visibility = View.VISIBLE
-        binding.btnLogin.text = "Already have an account? Login"
+        binding.btnSignIn.text = "Already have an account? Login"
 
-        binding.btnLogin.setOnClickListener {
+        binding.btnSignIn.setOnClickListener {
             if (binding.btnSignUp.visibility == View.VISIBLE) {
                 binding.btnSignUp.visibility = View.GONE
                 binding.btnSignIn.visibility = View.VISIBLE
-                binding.btnLogin.text = "Don't have an account? Sign Up"
+                binding.btnSignIn.text = "Don't have an account? Sign Up"
             } else {
                 binding.btnSignIn.visibility = View.GONE
                 binding.btnSignUp.visibility = View.VISIBLE
-                binding.btnLogin.text = "Already have an account? Login"
+                binding.btnSignIn.text = "Already have an account? Login"
             }
         }
 

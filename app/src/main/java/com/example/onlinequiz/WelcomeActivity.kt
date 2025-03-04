@@ -17,7 +17,7 @@ class WelcomeActivity : AppCompatActivity() {
         if (user != null) {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
-            startActivity(Intent(this, SignUpActivity::class.java))
+            startActivity(Intent(this, SignupActivity::class.java))
         }
         finish()
     }

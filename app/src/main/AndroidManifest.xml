@@ -21,7 +21,7 @@
         </activity>
 
         <!-- Authentication Activities -->
-        <activity android:name=".SignUpActivity"
+        <activity android:name=".SignupActivity"
             android:exported="true"/> <!-- Ensure the correct class name -->
 
         <activity android:name=".LoginActivity"
@@ -37,6 +37,8 @@
 
         <activity android:name=".AboutUsActivity"
             android:exported="false"/> <!-- No need to be accessible externally -->
+        <activity android:name=".FeedbackActivity" />
+
 
     </application>
 

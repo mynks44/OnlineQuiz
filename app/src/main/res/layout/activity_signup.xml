@@ -44,7 +44,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Remember Me"
-        android:padding="8dp"
         android:layout_marginTop="10dp"
         tools:ignore="HardcodedText" />
 
@@ -64,7 +63,7 @@
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already have an account? Login"
@@ -76,13 +75,10 @@
 
     <TextView
         android:id="@+id/tvForgotPassword"
-        android:layout_width="340dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:paddingTop="10dp"
         android:text="Forgot Password?"
-        android:textColor="@color/blue"
-        android:textSize="14sp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:layout_marginTop="10dp"
         tools:ignore="HardcodedText" />
-
 </LinearLayout>
