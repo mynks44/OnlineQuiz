@@ -51,6 +51,23 @@
         android:layout_height="wrap_content"
         android:text="Finish"
         android:layout_margin="8dp"
-        android:id="@+id/finish_btn"/>
+        android:id="@+id/finish_btn"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/repeatBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Repeat Quiz"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/reviewBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Review Answers"
+        android:visibility="gone"
+        tools:ignore="HardcodedText" />
+
 
 </LinearLayout>

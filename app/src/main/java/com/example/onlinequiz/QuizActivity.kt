@@ -99,10 +99,9 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
 
             val currentQuestion = questionModelList[currentQuestionIndex]
 
-            // Store user answer
+            // Store answer
             currentQuestion.userAnswer = selectedAnswer
 
-            // Check if answer is correct
             if (selectedAnswer == currentQuestion.correct) {
                 score++
             } else {
@@ -112,7 +111,6 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             currentQuestionIndex++
             loadQuestions()
         } else {
-            // Option button clicked
             selectedAnswer = clickedBtn.text.toString()
             highlightSelectedOption(clickedBtn)
         }
@@ -140,17 +138,51 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             scoreTitle.text = if (percentage > 60) "Congrats! You have passed" else "Oops! You have failed"
             scoreTitle.setTextColor(if (percentage > 60) Color.BLUE else Color.RED)
             scoreSubtitle.text = "$score out of $totalQuestions are correct"
-
-            finishBtn.setOnClickListener {
-                showIncorrectAnswers()
-            }
         }
 
-        AlertDialog.Builder(this)
+        val alertDialog = AlertDialog.Builder(this)
             .setView(dialogBinding.root)
             .setCancelable(false)
-            .show()
+            .create()
+
+        dialogBinding.finishBtn.text = "Finish"
+        dialogBinding.finishBtn.setOnClickListener {
+            alertDialog.dismiss()
+            finishQuizAndGoHome()
+        }
+
+        dialogBinding.repeatBtn.visibility = View.VISIBLE
+        dialogBinding.repeatBtn.setOnClickListener {
+            alertDialog.dismiss()
+            restartQuiz()
+        }
+
+        dialogBinding.reviewBtn.visibility = View.VISIBLE
+        dialogBinding.reviewBtn.setOnClickListener {
+            alertDialog.dismiss()
+            showIncorrectAnswers()
+        }
+
+        alertDialog.show()
     }
+
+
+
+
+    private fun finishQuizAndGoHome() {
+        finish()
+    }
+
+    private fun restartQuiz() {
+        currentQuestionIndex = 0
+        selectedAnswer = ""
+        score = 0
+        incorrectAnswers.clear()
+
+        loadQuestions()
+        startTimer()
+    }
+
 
     private fun showIncorrectAnswers() {
         if (incorrectAnswers.isEmpty()) {
