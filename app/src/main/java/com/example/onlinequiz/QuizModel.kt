@@ -1,20 +1,16 @@
 package com.example.onlinequiz
 
 data class QuizModel(
-    val id: String,
-    val title: String,
-    val subtitle: String,
-    val time: String,
-    val questionList: List<QuestionModel>
-) {
-    constructor() : this("", "", "", "", emptyList())
-}
+    val id: String = "",
+    val title: String = "",
+    val subtitle: String = "",
+    val time: String = "",
+    val questionList: List<QuestionModel> = emptyList()
+)
 
 data class QuestionModel(
-    val question: String,
-    val options: List<String>,
-    val correct: String,
+    val question: String = "",
+    val options: List<String> = emptyList(),
+    val correct: String = "",
     var userAnswer: String? = null
-) {
-    constructor() : this("", emptyList(), "", null)
-}
+)

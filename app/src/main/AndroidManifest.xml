@@ -39,6 +39,7 @@
             android:exported="false"/> <!-- No need to be accessible externally -->
         <activity android:name=".FeedbackActivity" />
         <activity android:name=".ReviewActivity" />
+        <activity android:name=".HistoryActivity" />
 
 
     </application>

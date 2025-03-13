@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.onlinequiz.databinding.ActivityQuizBinding
 import com.example.onlinequiz.databinding.ScoreDialogBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class QuizActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -148,6 +150,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         dialogBinding.finishBtn.text = "Finish"
         dialogBinding.finishBtn.setOnClickListener {
             alertDialog.dismiss()
+            saveQuizResult()  // Save the quiz result before finishing
             finishQuizAndGoHome()
         }
 
@@ -166,8 +169,34 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         alertDialog.show()
     }
 
+    private fun saveQuizResult() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val databaseReference = FirebaseDatabase.getInstance().reference.child("History").child(userId)
 
+        val totalQuestions = questionModelList.size
+        val percentage = ((score.toFloat() / totalQuestions.toFloat()) * 100).toInt()
 
+        val attemptData = mapOf(
+            "quizName" to intent.getStringExtra("quizName"),
+            "scorePercentage" to percentage,
+            "correctAnswers" to score,
+            "wrongAnswers" to incorrectAnswers.size,
+            "attemptNumber" to System.currentTimeMillis(),
+            "incorrectQuestions" to incorrectAnswers.map { question ->
+                mapOf(
+                    "question" to question.question,
+                    ("yourAnswer" to question.userAnswer ?: "Not Answered") as Pair<Any, Any>,
+                    "correctAnswer" to question.correct
+                )
+            }
+        )
+
+        databaseReference.push().setValue(attemptData).addOnSuccessListener {
+            Toast.makeText(this, "History Saved!", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener {
+            Toast.makeText(this, "Failed to Save History", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private fun finishQuizAndGoHome() {
         finish()
@@ -182,7 +211,6 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         loadQuestions()
         startTimer()
     }
-
 
     private fun showIncorrectAnswers() {
         if (incorrectAnswers.isEmpty()) {

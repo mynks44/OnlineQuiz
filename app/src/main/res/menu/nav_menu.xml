@@ -10,6 +10,12 @@
         tools:ignore="HardcodedText" />
 
     <item
+        android:id="@+id/nav_history"
+        android:icon="@drawable/history"
+        android:title="History" />
+
+
+    <item
         android:id="@+id/nav_about"
         android:title="About Us"
         android:icon="@drawable/info"

@@ -68,16 +68,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_feedback -> {
                 startActivity(Intent(this, FeedbackActivity::class.java))
             }
+            R.id.nav_history -> {
+                startActivity(Intent(this, HistoryActivity::class.java)) // Launch HistoryActivity
+            }
             R.id.nav_sign_out -> {
                 signOutUser()
             }
             R.id.nav_exit -> {
                 finish()
             }
+            R.id.nav_history -> {
+                startActivity(Intent(this, HistoryActivity::class.java))
+            }
+
         }
-        binding.drawerLayout.closeDrawer(GravityCompat.START) // Close the drawer after selection
+        binding.drawerLayout.closeDrawer(GravityCompat.START) // Close the drawer
         return true
     }
+
 
     private fun signOutUser() {
         FirebaseAuth.getInstance().signOut()
