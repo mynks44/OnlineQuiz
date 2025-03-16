@@ -5,6 +5,7 @@ data class QuizModel(
     val title: String = "",
     val subtitle: String = "",
     val time: String = "",
+    val locked: Boolean = false,
     val questionList: List<QuestionModel> = emptyList()
 )
 

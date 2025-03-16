@@ -10,12 +10,12 @@ class HistoryAdapter(private val historyList: List<QuizHistoryModel>) :
     RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val attemptNumber: TextView = view.findViewById(R.id.attemptNumber)
         val quizName: TextView = view.findViewById(R.id.quizName)
         val scorePercentage: TextView = view.findViewById(R.id.scorePercentage)
         val correctAnswers: TextView = view.findViewById(R.id.correctAnswers)
         val wrongAnswers: TextView = view.findViewById(R.id.wrongAnswers)
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.history_item, parent, false)
@@ -24,11 +24,13 @@ class HistoryAdapter(private val historyList: List<QuizHistoryModel>) :
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         val history = historyList[position]
-        holder.quizName.text = history.quizName
-//        holder.attemptNumber.text = "Attempt: ${history.attemptNumber}" // attempt number
-        holder.scorePercentage.text = "Score: ${history.scorePercentage}%"
-        holder.correctAnswers.text = "Correct: ${history.correctAnswers}"
-        holder.wrongAnswers.text = "Wrong: ${history.wrongAnswers}"
+
+        // Use safe call `?.` and Elvis operator `?:` to avoid crashes
+        holder.quizName.text = history.quizName ?: "Unknown Quiz"
+        holder.attemptNumber.text = "Attempt: ${history.attemptNumber ?: 1}" // Default attempt 1
+        holder.scorePercentage.text = "Score: ${history.scorePercentage ?: 0}%"
+        holder.correctAnswers.text = "Correct: ${history.correctAnswers ?: 0}"
+        holder.wrongAnswers.text = "Wrong: ${history.wrongAnswers ?: 0}"
     }
 
     override fun getItemCount(): Int = historyList.size
