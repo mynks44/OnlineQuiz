@@ -1,10 +1,11 @@
-package com.example.onlinequiz
+package com.example.onlinequiz.activities
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.onlinequiz.QuizModel
+import com.example.onlinequiz.R
+import com.example.onlinequiz.adapters.ReviewAdapter
 import com.example.onlinequiz.databinding.ActivityReviewBinding
 
 class ReviewActivity : AppCompatActivity() {
@@ -28,4 +29,9 @@ class ReviewActivity : AppCompatActivity() {
         reviewAdapter = ReviewAdapter(quizModel.questionList)
         binding.recyclerView.adapter = reviewAdapter
     }
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    }
+
 }

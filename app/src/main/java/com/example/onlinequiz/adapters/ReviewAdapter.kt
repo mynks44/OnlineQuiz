@@ -1,4 +1,4 @@
-package com.example.onlinequiz
+package com.example.onlinequiz.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.onlinequiz.QuestionModel
+import com.example.onlinequiz.R
 
 class ReviewAdapter(private val questions: List<QuestionModel>) :
     RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {

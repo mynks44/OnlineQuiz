@@ -1,12 +1,14 @@
-package com.example.onlinequiz
+package com.example.onlinequiz.activities
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.onlinequiz.adapters.HistoryAdapter
+import com.example.onlinequiz.models.QuizHistoryModel
+import com.example.onlinequiz.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
@@ -63,4 +65,10 @@ class HistoryActivity : AppCompatActivity() {
             }
         })
     }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    }
+
 }

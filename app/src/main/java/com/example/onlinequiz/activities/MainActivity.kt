@@ -1,4 +1,4 @@
-package com.example.onlinequiz
+package com.example.onlinequiz.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlinequiz.databinding.ActivityMainBinding
 import com.google.firebase.database.FirebaseDatabase
 import androidx.appcompat.widget.SearchView
+import com.example.onlinequiz.adapters.QuizListAdapter
+import com.example.onlinequiz.QuizModel
+import com.example.onlinequiz.R
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -29,7 +32,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var filteredQuizList: MutableList<QuizModel>
     private lateinit var databaseUser: DatabaseReference
     private lateinit var databaseQuestions: DatabaseReference
-
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +41,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar, R.string.open, R.string.close)
+        toggle = ActionBarDrawerToggle(
+            this, binding.drawerLayout, binding.toolbar,
+            R.string.open, R.string.close
+        )
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -59,33 +64,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_home -> {
-                Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_home -> Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_about -> startActivity(Intent(this, AboutUsActivity::class.java))
+            R.id.nav_feedback -> startActivity(Intent(this, FeedbackActivity::class.java))
+            R.id.nav_history -> startActivity(Intent(this, HistoryActivity::class.java))
+            R.id.nav_discussions -> {
+                // ✅ Open Subject Selection for Discussions
+                startActivity(Intent(this, DiscussionSubjectSelectionActivity::class.java))
             }
-            R.id.nav_about -> {
-                startActivity(Intent(this, AboutUsActivity::class.java))
-            }
-            R.id.nav_feedback -> {
-                startActivity(Intent(this, FeedbackActivity::class.java))
-            }
-            R.id.nav_history -> {
-                startActivity(Intent(this, HistoryActivity::class.java)) // Launch HistoryActivity
-            }
-            R.id.nav_sign_out -> {
-                signOutUser()
-            }
-            R.id.nav_exit -> {
-                finish()
-            }
-            R.id.nav_history -> {
-                startActivity(Intent(this, HistoryActivity::class.java))
-            }
-
+            R.id.nav_sign_out -> signOutUser()
+            R.id.nav_exit -> finishAffinity() // ✅ Close the entire app
         }
+
         binding.drawerLayout.closeDrawer(GravityCompat.START) // Close the drawer
         return true
     }
-
 
     private fun signOutUser() {
         FirebaseAuth.getInstance().signOut()
@@ -146,6 +139,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .get()
             .addOnSuccessListener { dataSnapshot ->
                 if (dataSnapshot.exists()) {
+                    quizModelList.clear()
                     for (snapshot in dataSnapshot.children) {
                         val quizModel = snapshot.getValue(QuizModel::class.java)
                         if (quizModel != null) {

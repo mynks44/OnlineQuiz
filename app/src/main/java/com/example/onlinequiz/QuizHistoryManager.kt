@@ -35,4 +35,5 @@ object QuizHistoryManager {
         val type = object : TypeToken<List<String>>() {}.type
         return gson.fromJson(json, type)
     }
+
 }

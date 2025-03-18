@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -11,28 +12,31 @@
         android:layout_height="wrap_content"
         android:text="Quiz Name"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/quizScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Score: 80%"
-        android:textSize="16sp" />
+<!--    <TextView-->
+<!--        android:id="@+id/quizScore"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Score: 80%"-->
+<!--        android:textSize="16sp" />-->
 
     <TextView
         android:id="@+id/correctAnswers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Correct: 8"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/wrongAnswers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wrong: 2"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/attemptNumber"
@@ -40,7 +44,8 @@
         android:layout_height="wrap_content"
         android:text="Attempt: 1"
         android:textSize="16sp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/scorePercentage"
@@ -48,6 +53,7 @@
         android:layout_height="wrap_content"
         android:text="Score Percentage: 80%"
         android:textSize="16sp"
-         android:textColor="@android:color/black"/>
+         android:textColor="@android:color/black"
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>

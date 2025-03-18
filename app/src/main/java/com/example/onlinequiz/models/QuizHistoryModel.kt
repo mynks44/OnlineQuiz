@@ -1,4 +1,4 @@
-package com.example.onlinequiz
+package com.example.onlinequiz.models
 
 data class QuizHistoryModel(
     val userId: String = "",

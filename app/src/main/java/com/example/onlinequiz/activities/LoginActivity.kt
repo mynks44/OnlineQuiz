@@ -1,4 +1,4 @@
-package com.example.onlinequiz
+package com.example.onlinequiz.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.onlinequiz.R
 import com.example.onlinequiz.databinding.ActivitySignupBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -143,4 +144,9 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
     }
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    }
+
 }

@@ -1,12 +1,10 @@
-package com.example.onlinequiz
+package com.example.onlinequiz.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.onlinequiz.databinding.ActivitySignupBinding
+import com.example.onlinequiz.R
 import com.google.firebase.auth.FirebaseAuth
-import android.util.Patterns
 
 class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,4 +19,10 @@ class WelcomeActivity : AppCompatActivity() {
         }
         finish()
     }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    }
+
 }

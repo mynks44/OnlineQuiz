@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/white">
+
+    <!-- Discussion Messages List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDiscussions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical" />
+
+    <!-- Input Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@color/light_gray"
+        android:elevation="4dp">
+
+        <!-- Image Upload Button -->
+        <ImageView
+            android:id="@+id/btnImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/image"
+            android:padding="5dp"
+            android:contentDescription="Attach Image"
+            android:layout_marginEnd="8dp"/>
+
+        <EditText
+            android:id="@+id/etPost"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Type a message..."
+            android:background="@drawable/edittext_rounded_bg"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:maxLines="3" />
+
+        <Button
+            android:id="@+id/btnPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:paddingHorizontal="16dp"
+            android:textSize="14sp"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+</LinearLayout>

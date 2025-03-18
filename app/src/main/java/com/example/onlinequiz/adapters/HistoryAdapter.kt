@@ -1,10 +1,14 @@
-package com.example.onlinequiz
+package com.example.onlinequiz.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.onlinequiz.models.QuizHistoryModel
+import com.example.onlinequiz.R
 
 class HistoryAdapter(private val historyList: List<QuizHistoryModel>) :
     RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
@@ -22,16 +26,21 @@ class HistoryAdapter(private val historyList: List<QuizHistoryModel>) :
         return HistoryViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         val history = historyList[position]
+        holder.quizName.text = history.quizName
+        holder.attemptNumber.text = "Attempt: ${history.attemptNumber}"
+        holder.scorePercentage.text = "Score: ${history.scorePercentage}%"
+        holder.correctAnswers.text = "Correct: ${history.correctAnswers}"
+        holder.wrongAnswers.text = "Wrong: ${history.wrongAnswers}"
 
-        // Use safe call `?.` and Elvis operator `?:` to avoid crashes
-        holder.quizName.text = history.quizName ?: "Unknown Quiz"
-        holder.attemptNumber.text = "Attempt: ${history.attemptNumber ?: 1}" // Default attempt 1
-        holder.scorePercentage.text = "Score: ${history.scorePercentage ?: 0}%"
-        holder.correctAnswers.text = "Correct: ${history.correctAnswers ?: 0}"
-        holder.wrongAnswers.text = "Wrong: ${history.wrongAnswers ?: 0}"
+        val animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.item_fade_in)
+        holder.itemView.startAnimation(animation)
     }
+
 
     override fun getItemCount(): Int = historyList.size
 }
+
+

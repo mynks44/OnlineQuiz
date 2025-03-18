@@ -1,10 +1,12 @@
-package com.example.onlinequiz
+package com.example.onlinequiz.adapters
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.onlinequiz.QuizModel
+import com.example.onlinequiz.activities.QuizActivity
 import com.example.onlinequiz.databinding.QuizItemRecyclerRowBinding
 
 class QuizListAdapter(private var quizModelList: List<QuizModel>) :
