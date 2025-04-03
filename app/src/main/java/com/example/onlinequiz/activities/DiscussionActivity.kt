@@ -50,9 +50,9 @@ class DiscussionActivity : AppCompatActivity() {
     private fun fetchUserName() {
         val userId = auth.currentUser?.uid
         if (userId != null) {
-            db.collection("users").document(userId).get()
+            db.collection("Users").document(userId).get()
                 .addOnSuccessListener { document ->
-                    userName = document.getString("name") ?: "Student"
+                    userName = document.getString("firstName") ?: "Student"
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "Failed to fetch user name", Toast.LENGTH_SHORT).show()

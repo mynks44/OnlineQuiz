@@ -9,7 +9,8 @@ data class DiscussionPost(
     var timestamp: Timestamp = Timestamp.now(),
     var isPermanent: Boolean = false,
     var subjectName: String = "",
-    var imageUrl: String? = null
+    var imageUrl: String? = null,
+    val explanation: String = ""
 ) {
     fun getQuestion(): String? {
         return postText

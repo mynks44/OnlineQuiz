@@ -28,6 +28,7 @@ class ReviewAdapter(private val questions: List<QuestionModel>) :
         private val questionText: TextView = itemView.findViewById(R.id.tvQuestion)
         private val userAnswerText: TextView = itemView.findViewById(R.id.tvUserAnswer)
         private val correctAnswerText: TextView = itemView.findViewById(R.id.tvCorrectAnswer)
+        private val explanationText: TextView = itemView.findViewById(R.id.tvExplanation) // New
 
         @SuppressLint("SetTextI18n")
         fun bind(question: QuestionModel) {
@@ -35,12 +36,15 @@ class ReviewAdapter(private val questions: List<QuestionModel>) :
             userAnswerText.text = "Your Answer: ${question.userAnswer ?: "Not Answered"}"
             correctAnswerText.text = "Correct Answer: ${question.correct}"
 
-            // Highlight wrong answers
             if (question.userAnswer != null && question.userAnswer != question.correct) {
                 userAnswerText.setTextColor(itemView.resources.getColor(R.color.red))
+                explanationText.visibility = View.VISIBLE
+                explanationText.text = "Explanation: ${question.explanation}"
             } else {
                 userAnswerText.setTextColor(itemView.resources.getColor(R.color.green))
+                explanationText.visibility = View.GONE
             }
         }
     }
 }
+

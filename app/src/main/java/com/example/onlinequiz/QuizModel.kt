@@ -13,5 +13,6 @@ data class QuestionModel(
     val question: String = "",
     val options: List<String> = emptyList(),
     val correct: String = "",
-    var userAnswer: String? = null
+    var userAnswer: String? = null,
+    val explanation: String = ""
 )

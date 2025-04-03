@@ -86,6 +86,7 @@ class SignupActivity : AppCompatActivity() {
                     userId?.let {
                         database.child(it).setValue(user).addOnCompleteListener {
                             Toast.makeText(this, "Sign Up Successful!", Toast.LENGTH_SHORT).show()
+                            saveLoginDetails(email, firstName)
                             goToMainActivity(firstName)
                         }
                     }
@@ -111,9 +112,11 @@ class SignupActivity : AppCompatActivity() {
                     userId?.let {
                         database.child(it).get().addOnSuccessListener { snapshot ->
                             if (snapshot.exists()) {
-                                val firstName = snapshot.child("firstName").value.toString()
-                                saveLoginDetails(email, password, firstName)
+                                val firstName = snapshot.child("firstName").value?.toString() ?: "User"
+                                saveLoginDetails(email, firstName)
                                 goToMainActivity(firstName)
+                            } else {
+                                Toast.makeText(this, "Failed to fetch username", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -123,11 +126,10 @@ class SignupActivity : AppCompatActivity() {
             }
     }
 
-    private fun saveLoginDetails(email: String, password: String, firstName: String) {
+    private fun saveLoginDetails(email: String, firstName: String) {
         val editor = sharedPreferences.edit()
         if (binding.rememberMeCheckBox.isChecked) {
             editor.putString("email", email)
-            editor.putString("password", password)
             editor.putBoolean("rememberMe", true)
         } else {
             editor.clear()
@@ -163,5 +165,4 @@ class SignupActivity : AppCompatActivity() {
         super.finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
-
 }

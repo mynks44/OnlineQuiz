@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -22,4 +23,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#008000"/>
+
+    <TextView
+        android:id="@+id/tvExplanation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Explanation"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:visibility="gone"
+        tools:ignore="HardcodedText" />
+
 </LinearLayout>
