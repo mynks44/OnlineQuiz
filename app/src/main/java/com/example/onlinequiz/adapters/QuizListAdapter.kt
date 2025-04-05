@@ -9,7 +9,7 @@ import com.example.onlinequiz.QuizModel
 import com.example.onlinequiz.activities.QuizActivity
 import com.example.onlinequiz.databinding.QuizItemRecyclerRowBinding
 
-class QuizListAdapter(private var quizModelList: List<QuizModel>) :
+class QuizListAdapter(private var quizModelList: MutableList<QuizModel>) :
     RecyclerView.Adapter<QuizListAdapter.MyViewHolder>() {
 
     class MyViewHolder(private val binding: QuizItemRecyclerRowBinding) :
@@ -36,9 +36,7 @@ class QuizListAdapter(private var quizModelList: List<QuizModel>) :
         return MyViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return quizModelList.size
-    }
+    override fun getItemCount(): Int = quizModelList.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(quizModelList[position])
@@ -46,7 +44,8 @@ class QuizListAdapter(private var quizModelList: List<QuizModel>) :
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: List<QuizModel>) {
-        quizModelList = newList
+        quizModelList.clear()
+        quizModelList.addAll(newList)
         notifyDataSetChanged()
     }
 }

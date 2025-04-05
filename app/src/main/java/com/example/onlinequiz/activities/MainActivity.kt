@@ -58,8 +58,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         filteredQuizList = mutableListOf()
 
         fetchFirstName()
-        setupSearchView()
-        getDataFromFirebase()
+        getDataFromFirebase() // setupSearchView will be called after adapter is initialized
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -69,14 +68,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_feedback -> startActivity(Intent(this, FeedbackActivity::class.java))
             R.id.nav_history -> startActivity(Intent(this, HistoryActivity::class.java))
             R.id.nav_discussions -> {
-                // ✅ Open Subject Selection for Discussions
                 startActivity(Intent(this, DiscussionSubjectSelectionActivity::class.java))
             }
             R.id.nav_sign_out -> signOutUser()
-            R.id.nav_exit -> finishAffinity() // ✅ Close the entire app
+            R.id.nav_exit -> finishAffinity()
         }
 
-        binding.drawerLayout.closeDrawer(GravityCompat.START) // Close the drawer
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
@@ -119,6 +117,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun filterList(query: String) {
+        if (!::adapter.isInitialized) return // Safety check
+
         filteredQuizList.clear()
         if (query.isEmpty()) {
             filteredQuizList.addAll(quizModelList)
@@ -147,7 +147,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                     }
                     filteredQuizList.addAll(quizModelList)
-                    setupRecyclerView()
+                    setupRecyclerView()    // ✅ Initialize adapter
+                    setupSearchView()      // ✅ Safe to call after adapter is initialized
                 } else {
                     Log.d("FirebaseData", "No quizzes available in the database.")
                 }
