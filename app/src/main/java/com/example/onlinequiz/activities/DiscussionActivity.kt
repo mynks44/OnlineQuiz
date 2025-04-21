@@ -2,6 +2,7 @@ package com.example.onlinequiz.activities
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -40,27 +41,59 @@ class DiscussionActivity : AppCompatActivity() {
         binding.rvDiscussions.layoutManager = LinearLayoutManager(this)
         binding.rvDiscussions.adapter = discussionAdapter
 
-        fetchUserName() // Fetch logged-in user's name
         loadDiscussions()
 
-        binding.btnPost.setOnClickListener { postDiscussion() }
-        binding.btnImage.setOnClickListener { pickImage() }
-    }
+        // Disable buttons until name is ready
+        binding.btnPost.isEnabled = false
+        binding.btnImage.isEnabled = false
 
-    private fun fetchUserName() {
-        val userId = auth.currentUser?.uid
-        if (userId != null) {
-            db.collection("Users").document(userId).get()
-                .addOnSuccessListener { document ->
-                    userName = document.getString("firstName") ?: "Student"
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Failed to fetch user name", Toast.LENGTH_SHORT).show()
-                }
+        fetchUserName {
+            Log.d("DEBUG_USER", "👤 Final userName to use: $userName")
+            binding.btnPost.isEnabled = true
+            binding.btnImage.isEnabled = true
+
+            binding.btnPost.setOnClickListener {
+                Log.d("DEBUG_USER", "📤 Posting message as: $userName")
+                postDiscussion(userName) // ✅ Pass name directly
+            }
+
+
+            binding.btnImage.setOnClickListener {
+                pickImage()
+            }
         }
     }
 
-    private fun postDiscussion() {
+
+    private fun fetchUserName(onFetched: () -> Unit) {
+        val userId = auth.currentUser?.uid
+        if (userId == null) {
+            Log.e("DEBUG_USER", "❌ No logged-in user!")
+            onFetched()
+            return
+        }
+
+        db.collection("Users").document(userId).get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val name = document.getString("firstName")
+                    Log.d("DEBUG_USER", "✅ Fetched first name from Firestore: $name")
+                    userName = name ?: "Student"
+                } else {
+                    Log.e("DEBUG_USER", "❌ User document does not exist")
+                }
+                onFetched()
+            }
+            .addOnFailureListener { e ->
+                Log.e("DEBUG_USER", "❌ Failed to fetch user name: ${e.message}")
+                onFetched()
+            }
+    }
+
+
+
+    private fun postDiscussion(name: String) {
+        Log.d("POST_DEBUG", "Posting as: $name")
         if (isPosting) return
         isPosting = true
 
@@ -75,13 +108,13 @@ class DiscussionActivity : AppCompatActivity() {
         val postId = db.collection("discussions").document().id
 
         if (imageUri != null) {
-            uploadImage(postId, postText)
+            uploadImage(postId, postText, name)
         } else {
-            savePostToFirestore(postId, postText, null)
+            savePostToFirestore(postId, postText, null, name)
         }
     }
 
-    private fun uploadImage(postId: String, postText: String) {
+    private fun uploadImage(postId: String, postText: String, name: String) {
         val filePath = "discussion_images/$subjectName/${UUID.randomUUID()}.jpg"
         val storageRef = storage.reference.child(filePath)
 
@@ -89,7 +122,7 @@ class DiscussionActivity : AppCompatActivity() {
             storageRef.putFile(uri)
                 .addOnSuccessListener {
                     storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                        savePostToFirestore(postId, postText, downloadUri.toString())
+                        savePostToFirestore(postId, postText, downloadUri.toString(), name)
                     }
                 }
                 .addOnFailureListener {
@@ -99,12 +132,12 @@ class DiscussionActivity : AppCompatActivity() {
         }
     }
 
-    private fun savePostToFirestore(postId: String, postText: String?, imageUrl: String?) {
+    private fun savePostToFirestore(postId: String, postText: String?, imageUrl: String?, name: String) {
         val post = DiscussionPost(
             postId = postId,
             postText = postText,
             imageUrl = imageUrl,
-            studentName = userName,
+            studentName = name,  // ✅ use passed-in name
             timestamp = Timestamp.now(),
             subjectName = subjectName
         )
@@ -115,10 +148,6 @@ class DiscussionActivity : AppCompatActivity() {
                 binding.etPost.text.clear()
                 imageUri = null
                 isPosting = false
-
-                discussionList.add(post)
-                discussionAdapter.submitList(discussionList.toList())
-
                 binding.rvDiscussions.scrollToPosition(discussionList.size - 1)
             }
             .addOnFailureListener {
@@ -127,12 +156,15 @@ class DiscussionActivity : AppCompatActivity() {
             }
     }
 
+
     private fun loadDiscussions() {
         db.collection("discussions").document(subjectName).collection("messages")
             .orderBy("timestamp", Query.Direction.ASCENDING)
             .addSnapshotListener { querySnapshot, error ->
                 if (error != null) {
-                    Toast.makeText(this, "Error loading messages", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error loading messages: ${error.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("DiscussionActivity", "Firestorm error: ", error)
+
                     return@addSnapshotListener
                 }
 
