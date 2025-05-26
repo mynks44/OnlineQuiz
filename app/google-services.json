@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "838464760225",
+    "firebase_url": "https://onlinequiz-2522c-default-rtdb.firebaseio.com",
     "project_id": "onlinequiz-2522c",
     "storage_bucket": "onlinequiz-2522c.firebasestorage.app"
   },
@@ -10,6 +11,25 @@
         "mobilesdk_app_id": "1:838464760225:android:8694fd47ae35ed048c03e0",
         "android_client_info": {
           "package_name": "com.example.onlinequiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-nIeBj7YQevBwijh_bDSeUo3HPB1rSMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838464760225:android:ff7107286134631c8c03e0",
+        "android_client_info": {
+          "package_name": "com.quizzyonline.app"
         }
       },
       "oauth_client": [],

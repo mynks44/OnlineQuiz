@@ -27,6 +27,12 @@
         tools:ignore="HardcodedText" />
 
     <item
+        android:id="@+id/nav_telegram_material"
+        android:title="Telegram Materials"
+        android:icon="@drawable/telegram"/>
+
+
+    <item
         android:id="@+id/nav_feedback"
         android:icon="@drawable/feedback"
         android:title="Feedback"
