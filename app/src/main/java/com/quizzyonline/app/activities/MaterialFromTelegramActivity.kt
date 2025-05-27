@@ -1,9 +1,10 @@
 package com.quizzyonline.app.activities
 
-
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,38 +33,71 @@ class MaterialFromTelegramActivity : AppCompatActivity() {
                     doc.toObject(TelegramMaterialModel::class.java)?.let { materialList.add(it) }
                 }
 
-                val adapter = TelegramMaterialAdapter(materialList) { item ->
-                    if (item.joinedRequired) {
-                        showJoinDialog(item.link)
-                    } else {
-                        openTelegramLink(item.link)
-                    }
-                }
+                val adapter = TelegramMaterialAdapter(
+                    materialList,
+                    onJoin = { item -> openTelegramLink(item.joinLink) },
+                    onOpen = { item -> openTelegramLink(item.link) }
+                )
+
 
                 binding.recyclerView.adapter = adapter
             }
     }
+    private fun isTelegramInstalled(): Boolean {
+        val packageManager = packageManager
+        val telegramPackages = listOf(
+            "org.telegram.messenger",         // Telegram
+            "org.telegram.messenger.web",     // Web version
+            "org.thunderdog.challegram"     // Telegram X (if needed)
+        )
 
-    private fun openTelegramLink(link: String) {
+        for (pkg in telegramPackages) {
+            try {
+                packageManager.getPackageInfo(pkg, 0)
+                return true
+            } catch (e: Exception) {
+                // Package not found, try next
+            }
+        }
+
+        return false
+    }
+
+    private fun openTelegramLink(link: String?) {
+        if (link.isNullOrBlank()) {
+            Toast.makeText(this, "Invalid or missing Telegram link.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Logging for debug
+        android.util.Log.d("TELEGRAM_DEBUG", "Attempting to open: $link")
+
         try {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             intent.setPackage("org.telegram.messenger")
             startActivity(intent)
-        } catch (e: Exception) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
+        } catch (e: ActivityNotFoundException) {
+            try {
+                val fallbackIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                startActivity(fallbackIntent)
+            } catch (ex: Exception) {
+                showInstallTelegramDialog()
+            }
         }
     }
 
-    private fun showJoinDialog(link: String) {
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Join Telegram Channel")
-            .setMessage("You need to join our private Telegram channel to access this content.")
-            .setPositiveButton("Join Now") { _, _ ->
-                openTelegramLink("https://t.me/yourchannel") // your actual channel link
+
+    private fun showInstallTelegramDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Telegram Not Installed")
+            .setMessage("Please install the Telegram app to view this content.")
+            .setPositiveButton("Go to Play Store") { _, _ ->
+                val playStoreIntent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://play.google.com/store/apps/details?id=org.telegram.messenger")
+                }
+                startActivity(playStoreIntent)
             }
             .setNegativeButton("Cancel", null)
-            .create()
-
-        dialog.show()
+            .show()
     }
 }

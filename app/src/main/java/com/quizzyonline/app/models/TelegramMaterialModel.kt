@@ -7,5 +7,7 @@ data class TelegramMaterialModel(
     val clazz: String = "",
     val type: String = "",
     val link: String = "",
-    val joinedRequired: Boolean = true
+    val joinedRequired: Boolean = true,
+    val joinLink: String = "",
+    var isJoined: Boolean = false // not stored in Firestore
 )
