@@ -13,7 +13,7 @@ import com.example.onlinequiz.R
 import com.quizzyonline.app.models.TelegramMaterialModel
 
 class TelegramMaterialAdapter(
-    private val list: List<TelegramMaterialModel>,
+    private val list: MutableList<TelegramMaterialModel>,
     private val onJoin: (TelegramMaterialModel) -> Unit,
     private val onOpen: (TelegramMaterialModel) -> Unit
 ) : RecyclerView.Adapter<TelegramMaterialAdapter.ViewHolder>() {
@@ -68,4 +68,9 @@ class TelegramMaterialAdapter(
     }
 
     override fun getItemCount(): Int = list.size
+    fun updateList(newList: List<TelegramMaterialModel>) {
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
+    }
 }

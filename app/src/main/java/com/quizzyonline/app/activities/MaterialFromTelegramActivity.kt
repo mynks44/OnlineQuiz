@@ -17,38 +17,58 @@ class MaterialFromTelegramActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMaterialFromTelegramBinding
     private val materialList = mutableListOf<TelegramMaterialModel>()
+    private lateinit var adapter: TelegramMaterialAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMaterialFromTelegramBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = TelegramMaterialAdapter(materialList.toMutableList(),
+            onJoin = { item -> openTelegramLink(item.joinLink) },
+            onOpen = { item -> openTelegramLink(item.link) })
 
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
+
+        loadMaterials()
+
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = true
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterList(newText.orEmpty())
+                return true
+            }
+        })
+    }
+
+    private fun loadMaterials() {
         FirebaseFirestore.getInstance().collection("telegram_materials")
             .orderBy("title")
             .get()
             .addOnSuccessListener { snapshot ->
+                materialList.clear()
                 for (doc in snapshot.documents) {
                     doc.toObject(TelegramMaterialModel::class.java)?.let { materialList.add(it) }
                 }
-
-                val adapter = TelegramMaterialAdapter(
-                    materialList,
-                    onJoin = { item -> openTelegramLink(item.joinLink) },
-                    onOpen = { item -> openTelegramLink(item.link) }
-                )
-
-
-                binding.recyclerView.adapter = adapter
+                adapter.updateList(materialList)
             }
     }
+
+    private fun filterList(query: String) {
+        val filtered = materialList.filter {
+            it.title.contains(query, ignoreCase = true) ||
+                    it.type.contains(query, ignoreCase = true)
+        }
+        adapter.updateList(filtered)
+    }
+
     private fun isTelegramInstalled(): Boolean {
         val packageManager = packageManager
         val telegramPackages = listOf(
-            "org.telegram.messenger",         // Telegram
-            "org.telegram.messenger.web",     // Web version
-            "org.thunderdog.challegram"     // Telegram X (if needed)
+            "org.telegram.messenger",
+            "org.telegram.messenger.web",
+            "org.thunderdog.challegram"
         )
 
         for (pkg in telegramPackages) {
@@ -59,7 +79,6 @@ class MaterialFromTelegramActivity : AppCompatActivity() {
                 // Package not found, try next
             }
         }
-
         return false
     }
 
@@ -68,9 +87,6 @@ class MaterialFromTelegramActivity : AppCompatActivity() {
             Toast.makeText(this, "Invalid or missing Telegram link.", Toast.LENGTH_SHORT).show()
             return
         }
-
-        // Logging for debug
-        android.util.Log.d("TELEGRAM_DEBUG", "Attempting to open: $link")
 
         try {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
@@ -85,7 +101,6 @@ class MaterialFromTelegramActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun showInstallTelegramDialog() {
         AlertDialog.Builder(this)
