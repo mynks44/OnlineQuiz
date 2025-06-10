@@ -71,5 +71,6 @@
     <color name="navy">#000080</color>
     <color name="magenta">#FF00FF</color>
     <color name="indigo">#4B0082</color>
+    <color name="purple_500">#6200EE</color>
 
 </resources>

@@ -73,6 +73,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_telegram_material -> startActivity(Intent(this, MaterialFromTelegramActivity::class.java))
             R.id.nav_sign_out -> signOutUser()
             R.id.nav_exit -> finishAffinity()
+
+            R.id.nav_battles -> {
+                val intent = Intent(this, BattleActivity::class.java)
+                startActivity(intent)
+            }
+
+            R.id.nav_battles -> {
+                val intent = Intent(this, BattleLobbyActivity::class.java)
+                startActivity(intent)
+            }
+
+
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)

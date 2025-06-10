@@ -72,6 +72,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
 
+        <activity android:name="com.quizzyonline.app.activities.BattleActivity"
+            tools:ignore="MissingClass" />
+
+
     </application>
 
 </manifest>

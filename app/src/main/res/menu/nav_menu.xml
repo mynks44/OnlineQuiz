@@ -15,6 +15,12 @@
         android:title="History" />
 
     <item
+        android:id="@+id/nav_battles"
+        android:title="Battles"
+        android:icon="@drawable/swords" /> <!-- Replace with a suitable icon -->
+
+
+    <item
         android:id="@+id/nav_discussions"
         android:title="Discussions"
         android:icon="@drawable/discussion"
