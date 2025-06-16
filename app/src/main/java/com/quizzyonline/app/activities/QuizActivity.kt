@@ -73,24 +73,28 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         val currentQuestion = questionModelList[currentQuestionIndex]
+        val options = currentQuestion.options
 
         binding.apply {
             questionIndicatorTextview.text = "Question ${currentQuestionIndex + 1} / ${questionModelList.size}"
             questionProgressIndicator.progress =
                 ((currentQuestionIndex.toFloat() / questionModelList.size.toFloat()) * 100).toInt()
             questionTextview.text = currentQuestion.question
-            btn0.text = currentQuestion.options[0]
-            btn1.text = currentQuestion.options[1]
-            btn2.text = currentQuestion.options[2]
-            btn3.text = currentQuestion.options[3]
 
-            // Reset button colors
-            btn0.setBackgroundColor(getColor(R.color.gray))
-            btn1.setBackgroundColor(getColor(R.color.gray))
-            btn2.setBackgroundColor(getColor(R.color.gray))
-            btn3.setBackgroundColor(getColor(R.color.gray))
+            val buttons = listOf(btn0, btn1, btn2, btn3)
+            for (i in buttons.indices) {
+                if (i < options.size) {
+                    buttons[i].visibility = View.VISIBLE
+                    buttons[i].text = options[i]
+                    buttons[i].setBackgroundColor(getColor(R.color.gray))
+                } else {
+                    buttons[i].visibility = View.GONE
+                }
+            }
         }
     }
+
+
 
     override fun onClick(view: View?) {
         val clickedBtn = view as Button
