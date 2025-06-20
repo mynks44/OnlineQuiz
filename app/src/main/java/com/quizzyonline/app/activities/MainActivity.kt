@@ -10,12 +10,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlinequiz.R
 import com.example.onlinequiz.databinding.ActivityMainBinding
+import com.google.android.ads.mediationtestsuite.activities.HomeActivity
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -59,6 +62,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         fetchFirstName()
         getDataFromFirebase() // setupSearchView will be called after adapter is initialized
+
+        MobileAds.initialize(this) { }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -70,26 +75,43 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_discussions -> {
                 startActivity(Intent(this, DiscussionSubjectSelectionActivity::class.java))
             }
-            R.id.nav_telegram_material -> startActivity(Intent(this, MaterialFromTelegramActivity::class.java))
+//            R.id.nav_telegram_material -> startActivity(Intent(this, MaterialFromTelegramActivity::class.java))
+            R.id.nav_telegram_material -> {
+                showComingSoon("Telegram Materials feature is coming soon!")
+                return true
+            }
             R.id.nav_sign_out -> signOutUser()
             R.id.nav_exit -> finishAffinity()
 
-            R.id.nav_battles -> {
-                val intent = Intent(this, BattleActivity::class.java)
-                startActivity(intent)
-            }
+//            R.id.nav_battles -> {
+//                val intent = Intent(this, BattleActivity::class.java)
+//                startActivity(intent)
+//            }
+
+//            R.id.nav_battles -> {
+//                val intent = Intent(this, BattleLobbyActivity::class.java)
+//                startActivity(intent)
+//            }
 
             R.id.nav_battles -> {
-                val intent = Intent(this, BattleLobbyActivity::class.java)
-                startActivity(intent)
+                showComingSoon("Live Quiz Battles are in the works and will be available in an upcoming update!")
+                return true
             }
-
 
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    private fun showComingSoon(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Coming Soon 🚧")
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
 
     private fun signOutUser() {
         FirebaseAuth.getInstance().signOut()

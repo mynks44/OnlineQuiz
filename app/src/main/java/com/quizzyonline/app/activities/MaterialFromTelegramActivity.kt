@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onlinequiz.databinding.ActivityMaterialFromTelegramBinding
 import com.google.firebase.firestore.FirebaseFirestore
@@ -33,7 +34,7 @@ class MaterialFromTelegramActivity : AppCompatActivity() {
 
         loadMaterials()
 
-        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = true
             override fun onQueryTextChange(newText: String?): Boolean {
                 filterList(newText.orEmpty())

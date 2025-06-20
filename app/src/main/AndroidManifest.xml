@@ -10,6 +10,11 @@
         android:theme="@style/Theme.OnlineQuiz"
         tools:targetApi="31">
 
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2039404506887879~7873848449"/>  <!-- Replace with your actual App ID -->
+
         <activity
             android:name="com.quizzyonline.app.activities.WelcomeActivity"
             android:exported="true">
