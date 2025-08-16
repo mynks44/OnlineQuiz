@@ -6,4 +6,5 @@
     </style>
 
     <style name="Theme.OnlineQuiz" parent="Base.Theme.OnlineQuiz" />
+
 </resources>
