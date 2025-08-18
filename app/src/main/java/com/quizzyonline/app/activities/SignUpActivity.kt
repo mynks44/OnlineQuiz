@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.onlinequiz.R
 import com.example.onlinequiz.databinding.ActivitySignupBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -29,26 +30,20 @@ class SignupActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
         database = FirebaseDatabase.getInstance().getReference("Users")
 
-        binding.btnSwitch.setOnClickListener {
-            toggleLoginSignup()
-        }
+        binding.btnSwitch.setOnClickListener { toggleLoginSignup() }
 
         binding.btnSignUp.setOnClickListener {
-            if (isLoginMode) {
-                loginUser()
-            } else {
-                registerUser()
-            }
+            if (isLoginMode) loginUser() else registerUser()
         }
 
-        binding.tvForgotPassword.setOnClickListener {
-            resetPassword()
-        }
+        binding.tvForgotPassword.setOnClickListener { resetPassword() }
+
+        // NEW: Guest button
+        binding.btnGuest?.setOnClickListener { continueAsGuest() }
     }
 
     private fun toggleLoginSignup() {
         isLoginMode = !isLoginMode
-
         if (isLoginMode) {
             binding.etFirstName.visibility = View.GONE
             binding.etLastName.visibility = View.GONE
@@ -80,7 +75,8 @@ class SignupActivity : AppCompatActivity() {
                     val user = hashMapOf(
                         "firstName" to firstName,
                         "lastName" to lastName,
-                        "email" to email
+                        "email" to email,
+                        "isGuest" to false
                     )
 
                     userId?.let {
@@ -123,6 +119,46 @@ class SignupActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
+            }
+    }
+
+    private fun continueAsGuest() {
+        auth.signInAnonymously()
+            .addOnSuccessListener { result ->
+                val uid = result.user?.uid ?: return@addOnSuccessListener
+
+                // Minimal profile for guest users
+                val user = hashMapOf(
+                    "firstName" to "Guest",
+                    "lastName" to "",
+                    "email" to "",
+                    "isGuest" to true
+                )
+
+                database.child(uid).setValue(user).addOnCompleteListener {
+                    val editor = sharedPreferences.edit()
+                    editor.putString("firstName", "Guest")
+                    // optional remember so nav header shows immediately after restart
+                    editor.putBoolean("rememberMe", true)
+                    editor.apply()
+                    goToMainActivity("Guest")
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Guest login failed: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    // Optional helper if you later want to upgrade a guest to email/password without losing history
+    private fun upgradeGuestToEmail(email: String, password: String) {
+        val user = auth.currentUser ?: return
+        val cred = EmailAuthProvider.getCredential(email, password)
+        user.linkWithCredential(cred)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Account upgraded!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Upgrade failed: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
 

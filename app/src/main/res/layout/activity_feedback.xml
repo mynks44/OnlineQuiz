@@ -16,11 +16,20 @@
         android:minHeight="100dp"
         tools:ignore="Autofill,HardcodedText" />
 
+<!--    <Button-->
+<!--        android:id="@+id/btnSubmit"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Submit Feedback"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        tools:ignore="HardcodedText" />-->
+
     <Button
-        android:id="@+id/btnSubmit"
+        android:id="@+id/btnSendEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit Feedback"
-        android:layout_marginTop="16dp"
+        android:text="Send Feedback via Email"
+        android:layout_marginTop="12dp"
         tools:ignore="HardcodedText" />
+
 </LinearLayout>

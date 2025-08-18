@@ -55,6 +55,14 @@
         tools:ignore="HardcodedText" />
 
     <Button
+        android:id="@+id/btnGuest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Continue as Guest"
+        android:layout_marginTop="10dp"/>
+
+
+    <Button
         android:id="@+id/btnSignIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
