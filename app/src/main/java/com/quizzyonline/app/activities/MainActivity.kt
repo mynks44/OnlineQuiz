@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.quizzyonline.app.QuizModel
 import com.quizzyonline.app.adapters.QuizListAdapter
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         val prefs = getSharedPreferences("settings", MODE_PRIVATE)
         val isDark = prefs.getBoolean("darkMode", false)
         AppCompatDelegate.setDefaultNightMode(
@@ -72,6 +74,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         getDataFromFirebase() // setupSearchView will be called after adapter is initialized
 
         MobileAds.initialize(this) { }
+        FirebaseMessaging.getInstance().subscribeToTopic("quiz_updates")
+//        FirebaseMessaging.getInstance().subscribeToTopic("quiz_updates")
+//            .addOnCompleteListener { /* optional: show success */ }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

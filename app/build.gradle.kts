@@ -66,4 +66,6 @@ dependencies {
 
     implementation(libs.glide)
     kapt("com.github.bumptech.glide:compiler:4.12.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-messaging")
 }
